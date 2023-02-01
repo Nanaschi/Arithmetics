@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,13 +9,44 @@ internal class Program
     {
         //Console.WriteLine(RomanToInt("LVIII"));
 
-        var shaza = "Podium";
-        Console.WriteLine(shaza[5]);
+        Console.WriteLine(IsValid("(]"));
         //Console.WriteLine(string.Join(" ", TwoSum(new[] {2, 7, 11, 15}, 9)));
     }
 
 
-    
+    public static bool IsValid(string s)
+    {
+        Stack<char> parentheses = new Stack<char>();
+        foreach(char c in s){
+            if(c == '(' || c == '{' || c == '['){
+                parentheses.Push(c);
+            }
+            else{
+                if(parentheses.Count == 0)
+                    return false;
+                char exp = parentheses.Pop();
+                switch(exp){
+                    case '(':
+                        if(c != ')')
+                            return false;
+                        break;
+                    case '{':
+                        if(c != '}')
+                            return false;
+                        break;
+                    case '[':
+                        if(c != ']')
+                            return false;
+                        break;
+                }
+            }
+        }
+        if(parentheses.Count == 0)
+            return true;
+        return false;
+    }
+
+
     public static int RomanToInt(string s)
     {
         var map = new Dictionary<char, int>();
@@ -45,7 +77,7 @@ internal class Program
         for (int i = s.Length - 1; i >= 0; i--)
         {
             int current = map[s[i]];
-            if ( current < last)
+            if (current < last)
             {
                 sum -= current;
             }
@@ -56,9 +88,10 @@ internal class Program
 
             last = current;
         }
+
         return sum;
     }
-    
+
     public static bool IsPalindrome(int x)
     {
         char[] forwardCharArray = x.ToString().ToCharArray();
@@ -67,7 +100,7 @@ internal class Program
     }
 
     public static int[] TwoSum(int[] nums, int target)
-    { 
+    {
         int[] array = new int[] { };
         for (int i = 0; i < nums.Length; i++)
         {
